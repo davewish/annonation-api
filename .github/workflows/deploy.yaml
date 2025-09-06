@@ -1,0 +1,30 @@
+name: Deploy Backend to GKE
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up GCP credentials
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: Build Docker image
+        run: |
+          docker build . -t gcr.io/${{ secrets.PROJECT_ID }}/annotation-backend:${{ github.sha }}
+
+      - name: Push Docker image to GCR
+        run: |
+          gcloud auth configure-docker
+          docker push gcr.io/${{ secrets.PROJECT_ID }}/annotation-backend:${{ github.sha }}
+
+      - name: Deploy to GKE
+        run: |
+          gcloud container clusters get-credentials annotation-cluster --zone=us-central1-a --project ${{ secrets.PROJECT_ID }}
+          kubectl set image deployment/backend-deployment backend=gcr.io/${{ secrets.PROJECT_ID }}/annotation-backend:${{ github.sha }}

@@ -1,8 +1,9 @@
 {
   "name": "demo-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,8 +12,10 @@
   "dependencies": {
     "@msgpack/msgpack": "^3.1.2",
     "axios": "^1.11.0",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "JSONStream": "^1.3.5",
+    "mongoose": "^8.18.0",
     "mongose": "^0.0.2-security",
     "redis": "^5.8.2",
     "sharp": "^0.34.3",
