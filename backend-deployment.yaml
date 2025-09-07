@@ -14,16 +14,22 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gcr.io/your-project/annotation-backend:latest
+          image: gcr.io/glass-tribute-471316-k1/annotation-backend:latest
           ports:
             - containerPort: 3001
+          env:
+            - name: HF_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hf-secret
+                  key: HF_API_KEY
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: backend
   ports:

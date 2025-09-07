@@ -57,6 +57,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => console.log("Client disconnected"));
 });
 
-server.listen(3001, () =>
+server.listen(process.env.PORT || 3001, () =>
   console.log("Backend running on http://localhost:3001")
 );
